@@ -7,6 +7,7 @@ import type { FieldConfig, IFormSchema } from './schema-validator/type';
 import FormContext from './context/form.context';
 import CodeBlock from './components/codeblock/codeblock';
 import Label from './components/label';
+import Radio from './components/radio/radio';
 
 
 function SchemaParser(schemaText: string) {
@@ -102,7 +103,9 @@ const DynamicFormBuilder = ({
             case 'text':
                 return (
                     <div className='m-2 mb-0' key={element.key}>
-                        <Label>{element.label}</Label>
+                        <Label
+                            required={element.validation?.required}
+                        >{element.label}</Label>
                         <Input
                             intent={errorState[element.key] ? 'danger' : 'primary'}
                             value={formState[element.key] || ''}
@@ -114,11 +117,33 @@ const DynamicFormBuilder = ({
             case 'select':
                 return (
                     <div className='m-2 mb-0' key={element.key}>
-                        <Label>{element.label}</Label>
+                        <Label
+                            required={element.validation?.required}
+                        >{element.label}</Label>
                         <Select
                             options={element.children || []}
                             value={formState[element.key] || ''}
                             onChange={(e) => handleInputChange(element.key, e.target.value)}
+                        />
+                        {errorState[element.key] && <span className="error-text">{errorState[element.key]}</span>}
+                    </div>
+                );
+
+            case 'radio':
+                return (
+                    <div className='m-2 mb-0' key={element.key}>
+                        <Label
+                            required={element.validation?.required}
+                        >{element.label}</Label>
+                        <Radio
+                            multiSelect={element.multiple}
+                            options={element.children || []}
+                            selectedValues={
+                                formState[element.key] ? formState[element.key].split(",") : []
+                            }
+                            onChange={(selected) =>
+                                handleInputChange(element.key, selected.join(","))
+                            }
                         />
                         {errorState[element.key] && <span className="error-text">{errorState[element.key]}</span>}
                     </div>
@@ -130,13 +155,13 @@ const DynamicFormBuilder = ({
 
 
     return (
-        <div className='flex justify-center mt-5 child:m-3' >
+        <div className='flex flex-col justify-center md:flex-row mt-5 child:m-3' >
             <div className='flex-1 max-w-[900px]'>
                 <div className='flex justify-between '>
                     <h1 className='text-lg font-bold'>
                         Form Schema Editor
                     </h1>
-                    <span className={`mr-3 text-white rounded-t-md px-2 ${isSchemaValid ? 'bg-green-500': 'bg-red-500'}`}>
+                    <span className={`mr-3 text-white rounded-t-md px-2 ${isSchemaValid ? 'bg-green-500' : 'bg-red-500'}`}>
                         {isSchemaValid ? 'valid json' : 'invalid json'}
                     </span>
                 </div>

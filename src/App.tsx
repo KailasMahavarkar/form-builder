@@ -31,6 +31,18 @@ const config: IFormSchema = {
                 required: true
             },
         },
+        {
+            id: 'occupation',
+            type: 'radio',
+            key: 'occupation',
+            label: 'Occupation',
+            children: [
+                { label: 'Employed', value: 'employed' },
+                { label: 'Student', value: 'student' },
+                { label: 'Business', value: 'business' }
+            ],
+            multiple: true
+        }
     ],
 }
 
