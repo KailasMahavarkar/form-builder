@@ -4,7 +4,7 @@ function validateSchema(schema: IFormSchema, data: Record<string, unknown>) {
     const errors: { message: string; field: string }[] = [];
 
     schema.fields.forEach((field) => {
-        const value = data[field.key] || field.defaultValue || ''
+        const value = data[field.key] || ''
 
         // required field validation
         if (field.validation?.required && (value === undefined || value === null || value === '')) {

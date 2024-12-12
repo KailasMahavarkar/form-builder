@@ -88,10 +88,6 @@ const DynamicFormBuilder = ({
     };
 
     const renderSingleConfig = (element: FieldConfig) => {
-        if (!formState[element.key] && element.defaultValue) {
-            setFormState((prevData) => ({ ...prevData, [element.key]: element.defaultValue || '' }));
-        }
-
         switch (element.type) {
             case 'text':
                 return (
@@ -183,29 +179,32 @@ const DynamicFormBuilder = ({
                         </table>
                     </div>
 
-                    <div className='m-2 text-left'>
-                        <h1 className='text-lg font-bold'>
-                            Error State
-                        </h1>
+                    {
+                        Object.keys(errorState).length > 0 && (
+                            <div className='m-2 text-left'>
+                                <h1 className='text-lg font-bold'>
+                                    Error State
+                                </h1>
 
-                        <table className="table-fixed w-full border-collapse border border-gray-300">
-                            <thead>
-                                <tr className="bg-gray-100">
-                                    <th className="w-1/3 border border-gray-300 px-4 py-2 text-left">Key</th>
-                                    <th className="w-2/3 border border-gray-300 px-4 py-2 text-left">Value</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {Object.keys(errorState).map((key) => (
-                                    <tr key={key}>
-                                        <td className="border border-gray-300 px-4 py-2">{key}</td>
-                                        <td className="border border-gray-300 px-4 py-2">{errorState[key]}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-
-                    </div>
+                                <table className="table-fixed w-full border-collapse border border-gray-300">
+                                    <thead>
+                                        <tr className="bg-gray-100">
+                                            <th className="w-1/3 border border-gray-300 px-4 py-2 text-left">Key</th>
+                                            <th className="w-2/3 border border-gray-300 px-4 py-2 text-left">Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {Object.keys(errorState).map((key) => (
+                                            <tr key={key}>
+                                                <td className="border border-gray-300 px-4 py-2">{key}</td>
+                                                <td className="border border-gray-300 px-4 py-2">{errorState[key]}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
 

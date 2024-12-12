@@ -36,3 +36,5 @@ npm run dev
 
 4. Open the browser and navigate to `http://localhost:5173`
 
+--------
+

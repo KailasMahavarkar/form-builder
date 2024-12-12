@@ -2,6 +2,7 @@ import FormContext from './context/form.context';
 import DynamicFormBuilder from './DynamicFormBuilder';
 import { useState } from 'react';
 import { IFormSchema } from './schema-validator/type';
+import DocumentationViewer from './DocumentViewer';
 
 const config: IFormSchema = {
     title: "Dynamic Form Example",
@@ -11,7 +12,7 @@ const config: IFormSchema = {
             type: "text",
             label: "Username",
             key: "username",
-            defaultValue: "Kailas",
+            initialValue: "Kailas",
             validation: {
                 required: true,
                 minLength: 3,
@@ -23,7 +24,7 @@ const config: IFormSchema = {
             type: "select",
             label: "Gender",
             key: "gender",
-            defaultValue: "male",
+            initialValue: "male",
             children: [
                 { value: "male", label: "Male" },
                 { value: "female", label: "Female" },
@@ -57,6 +58,8 @@ function App() {
                     console.log(data);
                 }}
             />
+
+            <DocumentationViewer />
         </FormContext.Provider>
     )
 

@@ -41,7 +41,6 @@ export interface InputProps
     disabled?: boolean;
     dataTestId?: string;
     type?: typeof inputTypeEnum[keyof typeof inputTypeEnum];
-    defaultValue?: string;
     rounded?: typeof sizeEnum[keyof typeof sizeEnum];
     hasFullWidth?: boolean;
     placeholder?: string;

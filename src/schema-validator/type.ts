@@ -5,7 +5,7 @@ type BaseFieldType = {
     label: string;
     key: string;
     validation?: ValidatorConfig;
-    defaultValue?: string;
+    initialValue?: string;
 };
 
 // for text field (input type text)

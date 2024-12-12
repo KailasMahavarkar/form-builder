@@ -10,7 +10,6 @@ const Input: React.FC<InputProps> = ({
     intent = "primary",
     size = "md",
     type = "text",
-    defaultValue = "",
     rounded = "md",
     hasFullWidth = false,
     value,
@@ -23,7 +22,7 @@ const Input: React.FC<InputProps> = ({
         <input
             placeholder={placeholder}
             type={type}
-            value={value || defaultValue}
+            value={value}
             disabled={disabled}
             className={
                 twMerge(
