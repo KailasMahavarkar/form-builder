@@ -13,3 +13,26 @@ This is a simple dynamic form builder that allows you to create forms with diffe
     ├── App.tsx (Main App file)
     └── main.js (Entry file for react)
 ```
+
+# Installation
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/KailasMahavarkar/form-builder.git
+```
+
+2. Install the dependencies
+
+```bash
+npm install
+```
+
+3. Start the development server
+
+```bash
+npm run dev
+```
+
+4. Open the browser and navigate to `http://localhost:5173`
+
