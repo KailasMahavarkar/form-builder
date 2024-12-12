@@ -2,7 +2,7 @@ import FormContext from './context/form.context';
 import DynamicFormBuilder from './DynamicFormBuilder';
 import { useState } from 'react';
 import { IFormSchema } from './schema-validator/type';
-import DocumentationViewer from './DocumentViewer';
+import FormSchemaDocs from './FormSchemaDocs';
 
 const config: IFormSchema = {
     title: "Dynamic Form Example",
@@ -57,7 +57,9 @@ function App() {
                 }}
             />
 
-            <DocumentationViewer />
+            <div className="flex items-center justify-center  ">
+                <FormSchemaDocs />
+            </div>
         </FormContext.Provider>
     )
 

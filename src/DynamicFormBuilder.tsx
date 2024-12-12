@@ -130,13 +130,16 @@ const DynamicFormBuilder = ({
 
 
     return (
-        <div className='flex child:flex-1 child:m-5' >
-            <div>
-                <span>
+        <div className='flex justify-center mt-5 child:m-3' >
+            <div className='flex-1 max-w-[900px]'>
+                <div className='flex justify-between '>
                     <h1 className='text-lg font-bold'>
                         Form Schema Editor
                     </h1>
-                </span>
+                    <span className={`mr-3 text-white rounded-t-md px-2 ${isSchemaValid ? 'bg-green-500': 'bg-red-500'}`}>
+                        {isSchemaValid ? 'valid json' : 'invalid json'}
+                    </span>
+                </div>
                 <CodeBlock
                     status={isSchemaValid ? 'valid' : 'invalid'}
                     text={schemaText}
@@ -165,7 +168,7 @@ const DynamicFormBuilder = ({
                     </div>
                 </form>
 
-                <div className='flex flex-col'>
+                <div className='flex flex-col max-w-md'>
                     <div className='m-2 text-left'>
                         <h1 className='text-lg font-bold'>
                             Form State

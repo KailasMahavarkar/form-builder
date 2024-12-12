@@ -24,7 +24,6 @@ const CodeBlock = ({
                 placeholder="Enter your JSON here"
                 onChange={onChange}
                 padding={15}
-                contentEditable
                 style={{
                     fontSize: 16,
                 }}
