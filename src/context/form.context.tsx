@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { IFormSchema } from '../schema-validator';
+import type { IFormSchema } from '../schema-validator/type';
 
 type FormContextType = {
     formState: Record<string, string>;
@@ -9,8 +9,6 @@ type FormContextType = {
     parsedSchema: IFormSchema;
     setParsedSchema: (parsedSchema: IFormSchema) => void;
 }
-
-
 
 const FormContext = createContext<FormContextType>({
     formState: {},

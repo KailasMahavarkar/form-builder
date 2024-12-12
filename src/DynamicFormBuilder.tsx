@@ -2,13 +2,14 @@ import React, { useContext, useState } from 'react';
 import Select from "./components/select";
 import Input from "./components/input";
 import Button from "./components/button";
-import { type FieldConfig, validateSchema } from './schema-validator';
+import { validateSchema } from './schema-validator';
+import type { FieldConfig } from './schema-validator/type';
 import FormContext from './context/form.context';
 import CodeBlock from './components/codeblock/codeblock';
 import Label from './components/label';
 
 
-const DynamicForm = ({
+const DynamicFormBuilder = ({
     onSubmit
 }: {
     onSubmit: (data: Record<string, string>) => void
@@ -18,15 +19,20 @@ const DynamicForm = ({
     const [errorState, setErrorState] = useState<Record<string, string>>({});
     const [isSchemaValid, setIsSchemaValid] = useState<boolean>(true);
 
+
+    // handle schema text change
+    // parse the schema and validate it
     const handleSchemaTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.target.value;
         try {
+            // try to parse the JSON if it fails, we don't update the schema
             const parsedData = JSON.parse(text);
 
             if (parsedData.fields && parsedData.title) {
                 setParsedSchema(parsedData);
             }
 
+            // validate the schema with the current form state
             const _errors = validateSchema(parsedData, formState);
             const newErrorState: Record<string, string> = {};
 
@@ -35,20 +41,19 @@ const DynamicForm = ({
             });
 
             setErrorState(newErrorState);
-            if (_errors.length) {
-                setIsSchemaValid(false);
-            } else {
-                setIsSchemaValid(true);
-            }
+            setIsSchemaValid(_errors.length === 0);
         } catch (err) {
-            console.error('Invalid JSON schema:', err); 4
+            console.error('Invalid JSON schema:', err);
             setIsSchemaValid(false);
         }
     };
 
     const handleInputChange = (key: string, value: string) => {
+
+        // update the form state with new value
         setFormState((prevData) => ({ ...prevData, [key]: value }));
 
+        // check if the field has any validation errors
         const _errors = validateSchema(parsedSchema, { ...formState, [key]: value });
         const currentFieldErrors = _errors.filter((error) => error.field === key);
 
@@ -60,7 +65,6 @@ const DynamicForm = ({
             } else {
                 delete newErrorState[key];
             }
-
             return newErrorState;
         });
     };
@@ -118,8 +122,6 @@ const DynamicForm = ({
         }
     };
 
-
-    console.log("error -->", errorState);
 
     return (
         <div className='flex child:flex-1 child:m-5' >
@@ -182,4 +184,4 @@ const DynamicForm = ({
     );
 };
 
-export default DynamicForm;
+export default DynamicFormBuilder;
