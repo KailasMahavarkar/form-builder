@@ -1,9 +1,7 @@
-import { IFormSchema, validateSchema } from './schema-validator';
+import { IFormSchema } from './schema-validator';
 import FormContext from './context/form.context';
-import useForm from './hooks/useForm';
 import FormWrapper from './FormWrapper';
-import { useContext, useState } from 'react';
-
+import { useState } from 'react';
 
 const config: IFormSchema = {
     title: "Dynamic Form Example",
@@ -54,7 +52,7 @@ function App() {
                 setParsedSchema
             }}
         >
-            <FormWrapper 
+            <FormWrapper
                 onSubmit={(data) => {
                     console.log(data);
                 }}

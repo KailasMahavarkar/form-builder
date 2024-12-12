@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import Select from "./components/select";
 import Input from "./components/input";
 import Button from "./components/button";
@@ -17,83 +17,54 @@ const DynamicForm = ({
     const [errorState, setErrorState] = useState<Record<string, string>>({});
 
 
-    const handleSchemaTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const text = e.target.value;
-
-        // check if text is valid json
+    const handleSchemaTextChange = useCallback((text: string) => {
         try {
-            const parsedData = JSON.parse(text);
+            const parsedData = JSON.parse(text)
 
-            // schema is valid object
             if (parsedData.fields && parsedData.title) {
-                setParsedSchema(parsedData);
+                setParsedSchema(parsedData)
             }
 
-            // validate schema
-            const _errors = validateSchema(parsedData, formState);
-
-            // if errors are present, then map errors to formState
+            const _errors = validateSchema(parsedData, formState)
             if (_errors.length) {
-                const _formState = { ...formState };
-                const _errorState = { ...errorState };
-
-                console.log("errors -->", _errors)
-
+                const _errorState: Record<string, string> = {}
                 _errors.forEach((error) => {
-                    _errorState[error.field] = error.message;
+                    _errorState[error.field] = error.message
                 })
-                setFormState(_formState);
-                setErrorState(_errorState);
+                setErrorState(_errorState)
+            }
+        } catch (e) {
+            console.error('Invalid JSON:', e)
+        }
+    }, [formState, setParsedSchema])
+
+    const handleInputChange = useCallback((key: string, value: string) => {
+        setFormState((prevData) => ({ ...prevData, [key]: value }))
+        const _errors = validateSchema(parsedSchema, { ...formState, [key]: value })
+
+        setErrorState((prevData) => {
+            const newErrorState = { ...prevData }
+            const currentFieldErrors = _errors.filter((error) => error.field === key)
+
+            if (currentFieldErrors.length) {
+                newErrorState[key] = currentFieldErrors[0].message
+            } else {
+                delete newErrorState[key]
             }
 
-            console.log("set error state -->", errorState)
+            return newErrorState
+        })
+    }, [parsedSchema, formState])
 
-        } catch (e: any) {
-            console.error('Invalid json')
-        }
-
-    }
-
-    const handleInputChange = (key: string, value: string) => {
-        setFormState((prevData) => ({ ...prevData, [key]: value }))
-
-        // validate schema
-        const _errors = validateSchema(parsedSchema, formState);
-
-        // errorState is object
-        if (errorState[key]) {
-            setErrorState((prevData) => {
-                delete prevData[key];
-                return prevData;
-            })
-        }
-
-        // update error state
-        // check if _errors has any errors related to current field
-        const currentFieldErrors = _errors.filter((error) => error.field === key);
-
-        if (currentFieldErrors.length) {
-            setErrorState((prevData) => ({ ...prevData, [key]: currentFieldErrors[0].message }))
-        }else{
-            setErrorState((prevData) => {
-                delete prevData[key];
-                return prevData;
-            });
-        }
-    }
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        onSubmit(formState);
-    }
+    const handleSubmit = useCallback((e: React.FormEvent) => {
+        e.preventDefault()
+        onSubmit(formState)
+    }, [formState, onSubmit])
 
     const renderSingleConfig = (element: FieldConfig) => {
-
-        // set default value if not present
         if (!formState[element.key]) {
             setFormState((prevData) => ({ ...prevData, [element.key]: element.defaultValue || '' }))
         }
-
 
         switch (element.type) {
             case 'text':

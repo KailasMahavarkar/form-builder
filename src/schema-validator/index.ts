@@ -47,7 +47,7 @@ export interface IFormSchema {
 }
 
 
-function validateSchema(schema: IFormSchema, data: Record<string, any>) {
+function validateSchema(schema: IFormSchema, data: Record<string, unknown>) {
     const errors: { message: string; field: string }[] = [];
 
     schema.fields.forEach((field) => {

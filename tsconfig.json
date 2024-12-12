@@ -5,6 +5,8 @@
 		"paths": {
 			"@schema-validator/*": ["./src/schema-validator/*"],
 			"@/*": ["./src/*"]
-		}
+		},
+		"skipLibCheck": true,
+		"noImplicitAny": false
 	}
 }

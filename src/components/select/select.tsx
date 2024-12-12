@@ -1,4 +1,4 @@
-import React, { SelectHTMLAttributes } from "react";
+import React from "react";
 import selectCVA from "./select.cva";
 import type { SelectProps } from "./select.types";
 
