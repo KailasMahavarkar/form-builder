@@ -3,11 +3,27 @@ import Select from "./components/select";
 import Input from "./components/input";
 import Button from "./components/button";
 import { validateSchema } from './schema-validator';
-import type { FieldConfig } from './schema-validator/type';
+import type { FieldConfig, IFormSchema } from './schema-validator/type';
 import FormContext from './context/form.context';
 import CodeBlock from './components/codeblock/codeblock';
 import Label from './components/label';
 
+
+function SchemaParser(schemaText: string) {
+    return new Promise<string | IFormSchema>((resolve, reject) => {
+        try {
+            const parsedResult = JSON.parse(schemaText);
+            if (parsedResult) {
+                resolve(parsedResult as IFormSchema);
+            } else {
+                reject("json is invalid");
+            }
+        } catch (error) {
+            console.log("error --> ", error);
+            reject("json is invalid");
+        }
+    });
+}
 
 const DynamicFormBuilder = ({
     onSubmit
@@ -24,28 +40,22 @@ const DynamicFormBuilder = ({
     // parse the schema and validate it
     const handleSchemaTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.target.value;
-        try {
-            // try to parse the JSON if it fails, we don't update the schema
-            const parsedData = JSON.parse(text);
 
-            if (parsedData.fields && parsedData.title) {
-                setParsedSchema(parsedData);
-            }
+        SchemaParser(text).then((parsedData) => {
+            setIsSchemaValid(true);
 
-            // validate the schema with the current form state
-            const _errors = validateSchema(parsedData, formState);
+            const schema = parsedData as IFormSchema;
+            const _errors = validateSchema(schema, formState);
             const newErrorState: Record<string, string> = {};
 
             _errors.forEach((error) => {
                 newErrorState[error.field] = error.message;
             });
 
-            setErrorState(newErrorState);
-            setIsSchemaValid(_errors.length === 0);
-        } catch (err) {
-            console.error('Invalid JSON schema:', err);
+            setParsedSchema(schema);
+        }).catch((err) => {
             setIsSchemaValid(false);
-        }
+        })
     };
 
     const handleInputChange = (key: string, value: string) => {
@@ -139,7 +149,7 @@ const DynamicFormBuilder = ({
                     Form Preview
                 </h1>
                 <form
-                    className='flex-col md:flex-row border-2 p-3'
+                    className='flex-col max-w-md md:flex-row border-2 p-3'
                     onSubmit={handleSubmit}>
                     <h1 className='text-lg font-bold '>
                         {parsedSchema?.title}

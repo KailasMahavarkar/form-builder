@@ -24,11 +24,9 @@ const CodeBlock = ({
                 placeholder="Enter your JSON here"
                 onChange={onChange}
                 padding={15}
-                className="font-mono bg-dracula"
+                contentEditable
                 style={{
-                    fontSize: 14,
-                    backgroundColor: "#282a36",
-                    color: "#f8f8f2",
+                    fontSize: 16,
                 }}
             />
         </div>

@@ -21,7 +21,6 @@ const DocumentationViewer = () => {
                 minLength: 3,
                 maxLength: 20,
             },
-            initialValue: "",
         },
         {
             id: "gender",

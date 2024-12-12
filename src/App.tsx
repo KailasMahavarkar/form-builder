@@ -12,7 +12,6 @@ const config: IFormSchema = {
             type: "text",
             label: "Username",
             key: "username",
-            initialValue: "Kailas",
             validation: {
                 required: true,
                 minLength: 3,
@@ -24,7 +23,6 @@ const config: IFormSchema = {
             type: "select",
             label: "Gender",
             key: "gender",
-            initialValue: "male",
             children: [
                 { value: "male", label: "Male" },
                 { value: "female", label: "Female" },
@@ -39,7 +37,7 @@ const config: IFormSchema = {
 
 function App() {
     const [formState, setFormState] = useState<Record<string, string>>({});
-    const [schemaText, setSchemaText] = useState<string>(JSON.stringify(config, null, 2));
+    const [schemaText, setSchemaText] = useState<string>(JSON.stringify(config, null, 4));
     const [parsedSchema, setParsedSchema] = useState<IFormSchema>(config);
 
     return (
