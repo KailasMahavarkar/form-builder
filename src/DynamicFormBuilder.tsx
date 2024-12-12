@@ -138,47 +138,77 @@ const DynamicFormBuilder = ({
                 />
             </div>
 
-            <div>
-
-                <div>
-                    <h1 className='text-lg font-bold'>
-                        Form Preview
+            <div className='flex-col'>
+                <h1 className='text-lg font-bold'>
+                    Form Preview
+                </h1>
+                <form
+                    className='flex-col md:flex-row border-2 p-3'
+                    onSubmit={handleSubmit}>
+                    <h1 className='text-lg font-bold '>
+                        {parsedSchema?.title}
                     </h1>
-                    <form
-                        className='flex-col md:flex-row border-2 p-3'
-                        onSubmit={handleSubmit}>
-                        <h1 className='text-lg font-bold '>
-                            {parsedSchema?.title}
-                        </h1>
-                        {parsedSchema?.fields?.map((currentConfig: FieldConfig) =>
-                            renderSingleConfig(currentConfig)
-                        )}
+                    {parsedSchema?.fields?.map((currentConfig: FieldConfig) =>
+                        renderSingleConfig(currentConfig)
+                    )}
 
-                        <div className='m-2'>
-                            <Button hasFullWidth type='submit'>
-                                Submit Form
-                            </Button>
-                        </div>
-                    </form>
-                </div>
+                    <div className='m-2'>
+                        <Button hasFullWidth type='submit'>
+                            Submit Form
+                        </Button>
+                    </div>
+                </form>
 
-                <div className='flex'>
+                <div className='flex flex-col'>
                     <div className='m-2 text-left'>
                         <h1 className='text-lg font-bold'>
                             Form State
                         </h1>
-                        <pre>{JSON.stringify(formState, null, 2)}</pre>
+
+                        <table className="table-fixed w-full border-collapse border border-gray-300">
+                            <thead>
+                                <tr className="bg-gray-100">
+                                    <th className="w-1/3 border border-gray-300 px-4 py-2 text-left">Key</th>
+                                    <th className="w-2/3 border border-gray-300 px-4 py-2 text-left">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {Object.keys(formState).map((key) => (
+                                    <tr key={key}>
+                                        <td className="border border-gray-300 px-4 py-2">{key}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{formState[key]}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
 
                     <div className='m-2 text-left'>
                         <h1 className='text-lg font-bold'>
                             Error State
                         </h1>
-                        <pre>{JSON.stringify(errorState, null, 2)}</pre>
+
+                        <table className="table-fixed w-full border-collapse border border-gray-300">
+                            <thead>
+                                <tr className="bg-gray-100">
+                                    <th className="w-1/3 border border-gray-300 px-4 py-2 text-left">Key</th>
+                                    <th className="w-2/3 border border-gray-300 px-4 py-2 text-left">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {Object.keys(errorState).map((key) => (
+                                    <tr key={key}>
+                                        <td className="border border-gray-300 px-4 py-2">{key}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{errorState[key]}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+
                     </div>
                 </div>
-
             </div>
+
 
         </div>
     );
